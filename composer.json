@@ -1,0 +1,19 @@
+{
+	"name": "nathanpc/linkdepot",
+	"description": "A minimalist way to store, manage, and work with your bookmarks and random URLs from the internet",
+	"authors": [
+		{
+			"name": "Nathan Campos",
+			"email": "nathan@innoveworkshop.com",
+			"homepage": "https://nathancampos.me/"
+		}
+	],
+	"require": {
+		"php": ">8.2"
+	},
+	"autoload": {
+		"psr-4": {
+			"LinkDepot\\": "src/"
+		}
+	}
+}
