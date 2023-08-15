@@ -1,0 +1,136 @@
+/**
+ * main.css
+ * What makes this website look pretty (subjective).
+ *
+ * @author Nathan Campos <nathan@innoveworkshop.com>
+ */
+
+html, body {
+	margin: 0 auto 0 auto;
+	max-width: 750px;
+	font-family: "Verdana";
+}
+
+a, a:visited, a:hover, a:active {
+	color: darkblue;
+}
+
+p code {
+	color: #e83e8c;
+}
+
+mark {
+	padding: 0 3px;
+	border: 1px solid darkgray;
+	border-radius: 3px;
+	background-color: whitesmoke;
+}
+
+/* Navbar */
+#navbar {
+	padding: 10px 5px;
+	border-bottom: 1px solid #585858;
+}
+
+#navbar > h1 {
+	display: inline;
+	margin: 0 10px 0 0;
+
+	font-size: 1.2em;
+}
+
+#navbar > h1 > a {
+	text-decoration: none;
+}
+
+#navbar > .nav {
+	display: inline;
+	font-size: 0.85em;
+}
+
+#navbar .nav-link {
+	text-decoration: none;
+}
+
+#navbar-brand-link {
+	color: darkblue;
+	text-decoration: underline;
+}
+
+#navbar-brand-depot {
+	border: 2px solid rgb(221 174 0);
+	padding: 0 4px;
+
+	color: #181818;
+}
+
+/* Main */
+
+#main {
+	margin: 1em 5px 1em 5px;
+}
+
+#main p {
+	font-size: 0.85em;
+	margin: 1em 0;
+}
+
+h2.section {
+	font-size: 1.2em;
+	margin: 10px 0 10px 0;
+}
+
+/* Footer */
+
+#footer {
+	padding: 5px;
+	border-top: 1px solid #585858;
+	text-align: center;
+}
+
+#footer > .copyright {
+	margin-top: 0.4em;
+	font-size: 0.75em;
+}
+
+/* Misc. */
+
+.hidden {
+	display: none;
+}
+
+.w-100 {
+	width: 100%;
+}
+
+.centered {
+	text-align: center;
+}
+
+.strikethrough {
+	text-decoration: line-through;
+}
+
+.code-block {
+	padding: 10px 15px;
+	background-color: papayawhip;
+	overflow: auto;
+}
+
+.badge {
+	vertical-align: super;
+	font-size: smaller;
+}
+
+.badge-danger {
+	color: #e83e8c;
+}
+
+.lead {
+	font-size: 1.2em;
+}
+
+.branding {
+	font-weight: bold;
+	color: darkblue;
+}
