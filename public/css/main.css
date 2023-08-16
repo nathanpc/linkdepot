@@ -68,16 +68,66 @@ mark {
 
 #main {
 	margin: 1em 5px 1em 5px;
+	font-size: 0.85em;
 }
 
 #main p {
-	font-size: 0.85em;
 	margin: 1em 0;
+	line-height: 1.3em;
 }
 
 h2.section {
 	font-size: 1.2em;
 	margin: 10px 0 10px 0;
+}
+
+/* Link Box */
+
+table.link-box {
+	border-collapse: collapse;
+}
+
+.link-box > tbody > tr {
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+}
+
+.link-box > tbody > tr.spacer {
+	height: 10px;
+	border: none;
+}
+
+.link-box td {
+	vertical-align: middle;
+}
+
+.link-box td.col-icon {
+	height: 48px;
+	min-width: 48px;
+
+	text-align: center;
+}
+
+.link-box td.col-desc {
+	padding-right: 10px;
+}
+
+.link-box td .favicon {
+	max-height: 28px;
+	max-width: 28px;
+}
+
+.link-box td .link-title {
+	height: 1.1em;
+	margin-bottom: 5px;
+	overflow-y: hidden;
+}
+
+.link-box td .link-url {
+	display: block;
+	height: 1.1em;
+	overflow-y: hidden;
+	font-size: 0.8em;
 }
 
 /* Footer */
