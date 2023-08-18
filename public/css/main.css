@@ -81,6 +81,16 @@ h2.section {
 	margin: 10px 0 10px 0;
 }
 
+/* Link Shelf */
+
+.link-shelf > h3 {
+	margin-bottom: 0.5em;	
+	border-bottom: 1px solid #bbbbbb;
+
+	font-size: 1.2em;
+	line-height: 1.4em;
+}
+
 /* Link Box */
 
 table.link-box {
