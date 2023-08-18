@@ -22,13 +22,15 @@ function link_box_row($title, $url, $favicon, $spacer = true) {
 
 	// Build up the element.
 	$output = <<<HTML
-		<tr>
+		<tr onclick="open_link('$url')" onauxclick="open_link('$url')">
 			<td class="col-icon">
 				<img class="favicon" src="$favicon" />
 			</td>
 			<td class="col-desc">
 				<div class="link-title">$title</div>
-				<a class="link-url" href="$url">$url</a>
+				<a class="link-url" href="$url"
+					onclick="event.stopPropagation();"
+					onauxclick="event.stopPropagation();">$url</a>
 			</td>
 		</tr>
 	HTML;

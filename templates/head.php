@@ -13,6 +13,9 @@ require_once __DIR__ . "/../templates/functions.php"
 	<!-- Styling -->
 	<link rel="stylesheet" href="<?= href('/css/reset.css') ?>">
 	<link rel="stylesheet" href="<?= href('/css/main.css') ?>">
+
+	<!-- Javascript -->
+	<script type="text/javascript" src="<?= href('/js/main.js') ?>"></script>
 </head>
 
 <body>
