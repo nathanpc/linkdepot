@@ -83,12 +83,26 @@ h2.section {
 
 /* Link Shelf */
 
-.link-shelf > h3 {
+.link-shelf > .shelf-header {
 	margin-bottom: 0.5em;	
 	border-bottom: 1px solid #bbbbbb;
+}
+
+.link-shelf > .shelf-header > h3 {
+	display: inline-block;
+	margin-right: 5px;
 
 	font-size: 1.2em;
 	line-height: 1.4em;
+}
+
+.link-shelf > .shelf-header > .shelf-actions {
+	display: none;
+	font-size: 0.8em;
+}
+
+.link-shelf > .shelf-header:hover > .shelf-actions {
+	display: inline;
 }
 
 /* Link Box */
@@ -97,55 +111,62 @@ table.link-box {
 	border-collapse: collapse;
 }
 
-.link-box > tbody > tr {
-	border: 1px solid #d6d6d6;
-	background-color: #efefef;
-
-	cursor: pointer;
-	cursor: hand;
-}
-
-.link-box > tbody > tr:hover {
-	border: 1px solid #a7a7a7;
-	background-color: #dddddd;
-}
-
-.link-box > tbody > tr.spacer {
-	height: 10px;
-	border: none;
-}
-
 .link-box td {
 	vertical-align: middle;
 }
 
-.link-box td.col-icon {
+.link-box tr {
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+}
+
+.link-box .link-item {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.link-box .link-item:hover {
+	border: 1px solid #a7a7a7;
+	background-color: #dddddd;
+}
+
+.link-box .link-item .col-icon {
 	height: 48px;
 	min-width: 48px;
 
 	text-align: center;
 }
 
-.link-box td.col-desc {
+.link-box .link-item .col-desc {
 	padding-right: 10px;
 }
 
-.link-box td .favicon {
+.link-box .link-item .favicon {
 	max-height: 28px;
 	max-width: 28px;
 }
 
-.link-box td .link-title {
+.link-box .link-item .link-title {
 	height: 1.1em;
 	margin-bottom: 5px;
 	overflow-y: hidden;
 }
 
-.link-box td .link-url {
+.link-box .link-item .link-url {
 	display: block;
 	height: 1.1em;
 	overflow-y: hidden;
 	font-size: 0.8em;
+}
+
+.link-box .link-actions td {
+	padding: 5px 10px;
+	font-size: 0.8em;
+}
+
+.link-box .spacer {
+	height: 10px;
+	border: none;
 }
 
 /* Footer */
@@ -159,6 +180,16 @@ table.link-box {
 #footer > .copyright {
 	margin-top: 0.4em;
 	font-size: 0.75em;
+}
+
+/* Actions */
+
+.action-delete {
+	color: #e83e8c;
+}
+
+.action-delete:hover {
+	color: #9f0049;
 }
 
 /* Misc. */

@@ -4,7 +4,15 @@
 	URLs from the internet.</p>
 
 <div class="link-shelf">
-	<h3 class="shelf-title">Desktop</h3>
+	<div class="shelf-header">
+		<h3>Desktop</h3>
+		<span class="shelf-actions">
+			<a href="#">store</a> ‧
+			<a href="#">manage</a> ‧
+			<a class="action-delete" href="#">delete</a>
+		</span>
+	</div>
+
 	<table class="link-box">
 		<?= link_box_row("Innove Workshop",
 			"https://innoveworkshop.com/",
@@ -15,7 +23,7 @@
 		<?= link_box_row("<table>: The Table element - HTML: HyperText Markup Language | MDN",
 			"https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table",
 			"https://developer.mozilla.org/favicon.ico",
-			false) ?>
+			false, false) ?>
 	</table>
 </div>
 
