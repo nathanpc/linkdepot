@@ -108,6 +108,7 @@ h2.section {
 /* Link Box */
 
 table.link-box {
+	width: 100%;
 	border-collapse: collapse;
 }
 
@@ -132,7 +133,7 @@ table.link-box {
 
 .link-box .link-item .col-icon {
 	height: 48px;
-	min-width: 48px;
+	width: 48px;
 
 	text-align: center;
 }
