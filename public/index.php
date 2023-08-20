@@ -3,6 +3,8 @@
 <p>A minimalist way to store, manage, and work with your bookmarks and random
 	URLs from the internet.</p>
 
+<?= LinkDepot\Shelf::FromID(1)->as_html() ?>
+
 <div class="link-shelf">
 	<div class="shelf-header">
 		<h3>Desktop</h3>
