@@ -28,6 +28,7 @@ function env_define_const($name, $default, $varname = null) {
 // General application branding.
 env_define_const('LINKDEPOT_APP_NAME', 'Link Depot', 'APP_NAME');
 
-// Site definitions.
+// Site and application definitions.
+env_define_const('LINKDEPOT_DB_PATH', '/depot.db', 'DB_PATH');
 env_define_const('LINKDEPOT_SITE_PATH', 'linkdepot', 'SITE_PATH');
 define('SITE_URL', '/' . SITE_PATH);

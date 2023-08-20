@@ -9,6 +9,21 @@
 require_once __DIR__ . "/config.php";
 
 /**
+ * Connects to the database and reuses the connection on subsequent calls.
+ *
+ * @return PDO Database connection object.
+ */
+function db_connect() {
+	static $pdo = null;
+
+	// Connect to the database in case it hasn't been done previously.
+	if ($pdo == null)
+		$pdo = new \PDO("sqlite:" . __DIR__ . DB_PATH);
+
+	return $pdo;
+}
+
+/**
  * Creates a simple, but effective, title string.
  *
  * @param  string $desc An optional descriptor of the current page. This will be
