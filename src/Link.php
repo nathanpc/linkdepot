@@ -82,6 +82,84 @@ class Link extends DatabaseItem {
 	}
 
 	/**
+	 * Fetches a favicon from an URL and sets the favicon property.
+	 *
+	 * @param string $url Location of the favicon image or NULL if it should be
+	 *                    fetched based on the link's URL.
+	 */
+	public function fetch_favicon($url = null) {
+		// Should we use Google's proxy?
+		if (is_null($url)) {
+			$url = "https://www.google.com/s2/favicons?sz=64&domain_url=" .
+				urlencode($this->url);
+		}
+
+		// Fetch the icon.
+		$icon = file_get_contents($url);
+		if (!$icon)
+			return;
+
+		// Set our favicon.
+		$this->favicon = $icon;
+	}
+
+	/**
+	 * Getter/setter for the title property.
+	 *
+	 * @param string $value Value of the property if used as setter.
+	 *
+	 * @return string Value of the property if used as getter.
+	 */
+	public function title($value = null) {
+		if (!is_null($value))
+			$this->title = $value;
+
+		return $this->title;
+	}
+
+	/**
+	 * Getter/setter for the URL property.
+	 *
+	 * @param string $value Value of the property if used as setter.
+	 *
+	 * @return string Value of the property if used as getter.
+	 */
+	public function url($value = null) {
+		if (!is_null($value))
+			$this->url = $value;
+
+		return $this->url;
+	}
+
+	/**
+	 * Getter/setter for the favicon property.
+	 *
+	 * @param resource $value Value of the property if used as setter.
+	 *
+	 * @return resource Value of the property if used as getter.
+	 */
+	public function favicon($value = null) {
+		if (!is_null($value))
+			$this->favicon = $value;
+
+		return $this->favicon;
+	}
+
+	/**
+	 * Getter/setter for the shelf property.
+	 *
+	 * @param Shelf $value Value of the property if used as setter.
+	 *
+	 * @return Shelf Value of the property if used as getter.
+	 */
+	public function shelf($value = null) {
+		if (!is_null($value))
+			$this->shelf = $value;
+
+		return $this->shelf;
+	}
+
+	/**
 	 * Creates a link box table row element.
 	 *
 	 * @param bool $has_menu Should we include a menu in this item?
