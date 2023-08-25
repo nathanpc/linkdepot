@@ -68,19 +68,98 @@ function href($loc) {
 }
 
 /**
+ * Gets the value of an parameter or uses a default if one wasn't provided.
+ *
+ * @param string $name           Parameter name (key in $_GET, $_POST, etc.)
+ * @param any    $default        Default value if the parameter wasn't set.
+ * @param string $sanitize_regex Regex used to match characters for removal.
+ *
+ * @return any Parameter value provided or the default.
+ */
+function reqparam($name, $default = null, $sanitize_regex = null) {
+	// Populate parameters list cache.
+	static $params = null;
+	if (is_null($params)) {
+		$params = filter_input_array(INPUT_GET);
+		if (!is_null(filter_input_array(INPUT_POST)))
+			$params = array_merge($params, filter_input_array(INPUT_POST));
+	}
+
+	// Should we use the default value?
+	if (!isset($params[$name]))
+		return $default;
+
+	// Should we sanitize the passed parameter?
+	if (!is_null($sanitize_regex))
+		return preg_replace($sanitize_regex, '', $params[$name]);
+
+	// We've got it.
+	return $params[$name];
+}
+
+/**
  * Gets the value of an URL parameter or uses a default if one wasn't provided.
  *
- * @param  string $name    Parameter name (key in $_GET).
- * @param  any    $default Default value in case the parameter wasn't set.
- * @return any             Parameter value provided or the default.
+ * @param string $name           Parameter name (key in $_GET).
+ * @param any    $default        Default value if the parameter wasn't set.
+ * @param string $sanitize_regex Regex used to match characters for removal.
+ *
+ * @return any Parameter value provided or the default.
  */
-function urlparam($name, $default = NULL) {
+function urlparam($name, $default = null, $sanitize_regex = null) {
 	// Should we use the default value?
 	if (!isset($_GET[$name]))
 		return $default;
 
+	// Should we sanitize the passed parameter?
+	if (!is_null($sanitize_regex))
+		return preg_replace($sanitize_regex, '', $_GET[$name]);
+
 	// We've got it.
 	return $_GET[$name];
+}
+
+/**
+ * Gets the values of multiple request parameters.
+ *
+ * @param array  $names          Request parameter names get values from.
+ * @param any    $default        Default value if a parameter wasn't set.
+ * @param string $sanitize_regex Regex used to match characters for removal.
+ *
+ * @return array Associative array of request parameters and their values.
+ */
+function reqmultiparams($names, $default = null, $sanitize_regex = null) {
+	$arr = array();
+
+	// Go through parameter names.
+	foreach ($names as $name)
+		$arr[$name] = reqparam($name, $default, $sanitize_regex);
+
+	return $arr;
+}
+
+/**
+ * Checks for required URL parameters.
+ *
+ * @param any $names Name of a single required URL parameter or an array.
+ *
+ * @return any FALSE if all required parameters were passed or an array of the
+ *             missing parameters.
+ */
+function required_params($names) {
+	$missing = array();
+
+	// Check the parameters.
+	foreach ($names as $name) {
+		if (is_null(reqparam($name)))
+			array_push($missing, $name);
+	}
+
+	// Were all of the parameters set?
+	if (empty($missing))
+		return false;
+
+	return $missing;
 }
 
 /**
