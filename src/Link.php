@@ -50,13 +50,12 @@ class Link extends DatabaseItem {
 		return self::FromRow(self::FromTableID("links", $id));
 	}
 
-	public static function FromRow($row) {
+	public static function FromRow($row, $shelf = null) {
 		if (is_null($row))
 			return null;
 
 		return new self($row["id"], $row["title"], $row["url"], $row["favicon"],
-			null);
-			//Shelf::FromID($row["shelf_id"]));
+			(is_null($shelf)) ? Shelf::FromID($row["shelf_id"]) : $shelf);
 	}
 
 	/**
@@ -77,7 +76,7 @@ class Link extends DatabaseItem {
 
 		// Check if we have the ID on record.
 		while ($row = $query->fetch(PDO::FETCH_ASSOC))
-			array_push($links, self::FromRow($row));
+			array_push($links, self::FromRow($row, $shelf));
 
 		return $links;
 	}
