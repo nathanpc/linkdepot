@@ -71,7 +71,7 @@ class Link extends DatabaseItem {
 
 		// Query the database.
 		$query = $dbh->prepare("SELECT * FROM links WHERE shelf_id = :id");
-		$query->bindValue(":id", $shelf->get_id());
+		$query->bindValue(":id", $shelf->id());
 		$query->execute();
 
 		// Check if we have the ID on record.

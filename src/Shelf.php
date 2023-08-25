@@ -61,6 +61,20 @@ class Shelf extends DatabaseItem {
 	}
 
 	/**
+	 * Getter/setter for the title property.
+	 *
+	 * @param string $value Value of the property if used as setter.
+	 *
+	 * @return string Value of the property if used as getter.
+	 */
+	public function title($value = null) {
+		if (!is_null($value))
+			$this->title = $value;
+
+		return $this->title;
+	}
+
+	/**
 	 * Creates a link box table with its contents populated.
 	 *
 	 * @param bool $has_menu Should we include a menu in this item?

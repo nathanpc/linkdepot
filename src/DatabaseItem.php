@@ -96,7 +96,7 @@ abstract class DatabaseItem extends Renderable {
 	 *
 	 * @return int ID of the item in the database.
 	 */
-	public function get_id() {
+	public function id() {
 		return $this->id;
 	}
 }
