@@ -31,6 +31,14 @@ class Shelf extends DatabaseItem {
 		$this->id = $id;
 		$this->title = $title;
 	}
+	
+	public static function List() {
+		$arr = array();
+		foreach (self::ListTable("shelves") as $row)
+			array_push($arr, self::FromRow($row));
+
+		return $arr;
+	}
 
 	public static function FromID($id) {
 		return self::FromRow(self::FromTableID("shelves", $id));
@@ -49,19 +57,7 @@ class Shelf extends DatabaseItem {
 	 * @return array Links that are part of this collection.
 	 */
 	public function links() {
-		$links = array();
-		$dbh = db_connect();
-
-		// Query the database.
-		$query = $dbh->prepare("SELECT * FROM links WHERE shelf_id = :id");
-		$query->bindValue(":id", $this->id);
-		$query->execute();
-
-		// Check if we have the ID on record.
-		while ($row = $query->fetch(PDO::FETCH_ASSOC))
-			array_push($links, Link::FromRow($row));
-
-		return $links;
+		return Link::ListFromShelf($this);
 	}
 
 	/**

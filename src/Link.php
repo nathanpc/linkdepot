@@ -41,6 +41,11 @@ class Link extends DatabaseItem {
 		$this->shelf = $shelf;
 	}
 
+	public static function List() {
+		throw new Exception("Can't list links without a shelf ID. Use " .
+			'ListFromShelf($shelf_id)');
+	}
+
 	public static function FromID($id) {
 		return self::FromRow(self::FromTableID("links", $id));
 	}
@@ -52,6 +57,29 @@ class Link extends DatabaseItem {
 		return new self($row["id"], $row["title"], $row["url"], $row["favicon"],
 			null);
 			//Shelf::FromID($row["shelf_id"]));
+	}
+
+	/**
+	 * Gets a list of links stored in a shelf.
+	 *
+	 * @param Shelf $shelf Link shelf object.
+	 *
+	 * @return array List of links stored in the specified shelf.
+	 */
+	public static function ListFromShelf($shelf) {
+		$links = array();
+		$dbh = db_connect();
+
+		// Query the database.
+		$query = $dbh->prepare("SELECT * FROM links WHERE shelf_id = :id");
+		$query->bindValue(":id", $shelf->get_id());
+		$query->execute();
+
+		// Check if we have the ID on record.
+		while ($row = $query->fetch(PDO::FETCH_ASSOC))
+			array_push($links, self::FromRow($row));
+
+		return $links;
 	}
 
 	/**

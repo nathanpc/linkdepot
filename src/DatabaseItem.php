@@ -23,6 +23,31 @@ abstract class DatabaseItem extends Renderable {
 	protected $id;
 
 	/**
+	 * Gets a list of all of the objects of this type in the database.
+	 *
+	 * @return array List of objects of this type in the database.
+	 */
+	abstract public static function List();
+
+	/**
+	 * Gets a list of all of the rows in a table.
+	 *
+	 * @param string $table Database table name.
+	 *
+	 * @return array List of the rows from the database in the form of
+	 *               associative arrays.
+	 */
+	protected static function ListTable($table) {
+		$dbh = db_connect();
+
+		// Query the database.
+		$query = $dbh->prepare("SELECT * FROM $table");
+		$query->execute();
+
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	/**
 	 * Constructs an object from an database ID.
 	 *
 	 * @param int $id ID of the object in the database.
@@ -65,5 +90,14 @@ abstract class DatabaseItem extends Renderable {
 	 * @return object Pre-populated database object.
 	 */
 	abstract public static function FromRow($row);
+
+	/**
+	 * Gets the ID od the item in the database.
+	 *
+	 * @return int ID of the item in the database.
+	 */
+	public function get_id() {
+		return $this->id;
+	}
 }
 
