@@ -180,7 +180,8 @@ class Link extends DatabaseItem {
 		// Ensure we properly encode the properties of the element.
 		$title = htmlentities($this->title);
 		$favicon = (!is_null($this->favicon)) ?
-			$this->favicon : href("/assets/default-favicon.png");
+			href("/link.php?action=favicon&id={$this->id}") :
+			href("/assets/default-favicon.png");
 
 		// Build up the element.
 		$output = <<<HTML

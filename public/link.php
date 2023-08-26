@@ -19,12 +19,46 @@ $method = $_SERVER["REQUEST_METHOD"];
 $action = strtolower(urlparam("action"));
 $format = strtolower(urlparam("format", "html"));
 
+// Handle favicons.
+if ($action == "favicon") {
+	// Get the ID of the link.
+	$id = urlparam("id");
+	if (is_null($id)) {
+		http_response_code(400);
+		header("Content-Type: text/plain");
+		echo "Error: Required parameter id wasn't set.";
+		return;
+	}
+
+	// Get the link from the ID.
+	$link = \LinkDepot\Link::FromID($id);
+	if (is_null($link)) {
+		http_response_code(400);
+		header("Content-Type: text/plain");
+		echo "Error: Invalid link ID.";
+		return;
+	}
+
+	// Check if we even have a favicon.
+	if (is_null($link->favicon())) {
+		http_response_code(404);
+		header("Content-Type: text/plain");
+		echo "Error: No favicon associated with this link.";
+		return;
+	}
+
+	// Set the content type header and send the image.
+	header("Content-Type: " . buffer_mime_type($link->favicon()));
+	echo $link->favicon();
+}
+
 // HTML output.
 if ($format == "html") {
 	require(__DIR__ . "/../templates/head.php"); 
 
 	if ($method == "GET") {
 		if ($action == "add") {
+			// Display the add form.
 			$params = reqmultiparams(["url", "title", "favicon"], "");
 			require(__DIR__ . "/../templates/link/add.php"); 
 		}
