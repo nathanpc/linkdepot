@@ -9,10 +9,11 @@
 		}
 	],
 	"require": {
-		"php": ">8.2",
+		"php": "^8.2",
 		"ext-json": "*",
 		"ext-pdo": "*",
-		"ext-sqlite3": "*"
+		"ext-sqlite3": "*",
+		"ext-fileinfo": "*"
 	},
 	"autoload": {
 		"psr-4": {
