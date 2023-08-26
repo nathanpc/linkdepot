@@ -51,6 +51,12 @@ class Shelf extends DatabaseItem {
 		return new self($row["id"], $row["title"]);
 	}
 
+	public function save() {
+		$this->commit("shelves", array(
+			"title" => $this->title
+		));
+	}
+
 	/**
 	 * Lists the links associated with this collection.
 	 *

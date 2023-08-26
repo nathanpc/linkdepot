@@ -81,6 +81,15 @@ class Link extends DatabaseItem {
 		return $links;
 	}
 
+	public function save() {
+		$this->commit("links", array(
+			"title" => $this->title,
+			"url" => $this->url,
+			"favicon" => $this->favicon,
+			"shelf_id" => $this->shelf->id()
+		));
+	}
+
 	/**
 	 * Fetches a favicon from an URL and sets the favicon property.
 	 *

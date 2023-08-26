@@ -92,6 +92,57 @@ abstract class DatabaseItem extends Renderable {
 	abstract public static function FromRow($row);
 
 	/**
+	 * Commits any changes made to the object to the database.
+	 */
+	abstract public function save();
+
+	/**
+	 * Commits changes to the object to the database. Will create a new row in
+	 * the database if the ID of the object is NULL.
+	 *
+	 * @param string $table Name of the table in the database.
+	 * @param array  $cols  Associative array with the column name and value.
+	 */
+	protected function commit($table, $cols) {
+		$is_insert = is_null($this->id);
+		$dbh = db_connect();
+		$stmt = null;
+
+		// Make our life a bit easier when building up the statement.
+		$col_names = array_keys($cols);
+		$col_keys = array_map(function ($col) { return ":$col"; }, $col_names);
+
+		// Create the base of the statement.
+		if ($is_insert) {
+			$stmt = "INSERT INTO $table (" . implode(", ", $col_names) .
+				") VALUES (" . implode(", ", $col_keys) . ")";
+		} else {
+			$stmt = "UPDATE $table SET ";
+
+			for ($i = 0, $size = count($col_names); $i < $size; ++$i) {
+				$stmt .= $col_names[$i] . " = " . $col_keys[$i];
+				if ($i < ($size - 1))
+					$stmt .= ", ";
+			}
+
+			$stmt .= " WHERE id = :id";
+		}
+
+		// Build up the database query.
+		$query = $dbh->prepare($stmt);
+		if (!$is_insert)
+			$query->bindValue(":id", $this->id);
+		for ($i = 0, $size = count($col_keys); $i < $size; ++$i) {
+			$query->bindValue($col_keys[$i], $cols[$col_names[$i]]);
+		}
+
+		// Execute our statement and get the new ID if we did an insert.
+		$query->execute();
+		if ($is_insert)
+			$this->id = $dbh->lastInsertId();
+	}
+
+	/**
 	 * Gets the ID od the item in the database.
 	 *
 	 * @return int ID of the item in the database.
