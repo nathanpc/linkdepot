@@ -15,6 +15,10 @@ a, a:visited, a:hover, a:active {
 	color: darkblue;
 }
 
+b {
+	font-weight: bold;
+}
+
 p code {
 	color: #e83e8c;
 }
