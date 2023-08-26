@@ -26,6 +26,23 @@ mark {
 	background-color: whitesmoke;
 }
 
+pre {
+	padding: 10px;
+	overflow: scroll;
+
+	font-family: "Courier New", monospace;
+	background-color: #fcf9eb;
+}
+
+code {
+	font-family: "Courier New", monospace;
+}
+
+sup {
+	vertical-align: super;
+	font-size: smaller;
+}
+
 /* Navbar */
 #navbar {
 	padding: 10px 5px;
@@ -189,6 +206,14 @@ table.link-box {
 
 /* Actions */
 
+.action-add {
+	color: #008000;
+}
+
+.action-add:hover {
+	color: #004a00;
+}
+
 .action-delete {
 	color: #e83e8c;
 }
@@ -219,6 +244,10 @@ table.link-box {
 	padding: 10px 15px;
 	background-color: papayawhip;
 	overflow: auto;
+}
+
+.form-line {
+	margin-bottom: 5px;
 }
 
 .badge {
