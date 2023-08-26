@@ -24,6 +24,17 @@ function db_connect() {
 }
 
 /**
+ * Gets the MIME type of a buffer.
+ *
+ * @param resource $buffer File contents to get the MIME type from.
+ *
+ * @return string MIME type of the buffer.
+ */
+function buffer_mime_type($buffer) {
+	return (new \finfo(FILEINFO_MIME_TYPE))->buffer($buffer);
+}
+
+/**
  * Creates a simple, but effective, title string.
  *
  * @param  string $desc An optional descriptor of the current page. This will be
