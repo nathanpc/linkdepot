@@ -88,13 +88,15 @@ class Shelf extends DatabaseItem {
 	 * @return string HTML of the link box table with its contents.
 	 */
 	public function as_html($has_menu = false) {
+		$href = "href";
+
 		// Build up our element's base.
 		$output = <<<HTML
-			<div class="link-shelf">
+			<div class="link-shelf" id="shelf-{$this->id}">
 				<div class="shelf-header">
 					<h3>{$this->title}</h3>
 					<span class="shelf-actions">
-						<a href="#">store</a> ‧
+						<a class="action-add" href="{$href("/link.php?action=add&shelf={$this->id}")}">add link</a> ‧
 						<a href="#">manage</a> ‧
 						<a class="action-delete" href="#">delete</a>
 					</span>
