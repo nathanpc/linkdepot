@@ -104,8 +104,8 @@ class Link extends DatabaseItem {
 		}
 
 		// Fetch the icon.
-		$icon = file_get_contents($url);
-		if (!$icon)
+		$icon = @file_get_contents($url);
+		if ($icon === false)
 			return;
 
 		// Set our favicon.
