@@ -1,3 +1,5 @@
+<?php require(__DIR__ . "/../head.php"); ?>
+
 <p>
 	Link successfully added to the
 	<a href="<?= href("/shelf.php?action=manage&id={$link->shelf()->id()}") ?>">
@@ -9,3 +11,5 @@
 		<?= $link->as_html(true) ?>
 	</table>
 </div>
+
+<?php require(__DIR__ . "/../footer.php"); ?>

@@ -1,3 +1,5 @@
+<?php require(__DIR__ . "/../head.php"); ?>
+
 <form id="link-add" method="POST" action="<?= href('/link.php?action=add') ?>">
 	<div class="form-line">
 		<label for="shelf">Shelf: </label>
@@ -32,3 +34,5 @@
 	<br>
 	<input type="submit" value="Submit" />
 </form>
+
+<?php require(__DIR__ . "/../footer.php"); ?>
