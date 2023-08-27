@@ -47,7 +47,7 @@ abstract class Renderable {
 		if ($pretty)
 			$flags |= JSON_PRETTY_PRINT;
 
-		return json_encode(as_array($expand), $flags);
+		return json_encode($this->as_array($expand), $flags);
 	}
 }
 
