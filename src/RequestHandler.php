@@ -103,6 +103,31 @@ abstract class RequestHandler {
 	}
 
 	/**
+	 * Sets the Content-Type header using a specific MIME type or automatically
+	 * via the requested format.
+	 *
+	 * @param string $mime MIME type or NULL if it should be detected
+	 *                     automatically.
+	 */
+	public function set_content_type($mime = null) {
+		if (is_null($mime)) {
+			switch ($this->format) {
+			case self::HTML:
+				header("Content-Type: text/html");
+				return;
+			case self::JSON:
+				header("Content-Type: application/json");
+				return;
+			default:
+				header("Content-Type: text/plain");
+				return;
+			}
+		}
+
+		header("Content-Type: $mime");
+	}
+
+	/**
 	 * Replies to the client with an appropriately formatted, given the request
 	 * format,  error and immediatly halts further processing of the request.
 	 *
