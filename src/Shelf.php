@@ -128,9 +128,28 @@ class Shelf extends DatabaseItem {
 
 		// Bring out the full picture.
 		if ($expand)
-			$arr["links"] = links();
+			$arr["links"] = $this->links();
 
 		return $arr;
+	}
+
+	public function as_xml($parent = null, $expand = null) {
+		// Create the root element.
+		$xml = (is_null($parent)) ?
+			xmldoc("shelf") : $parent->addChild("shelf");
+
+		// Build up the base document.
+		$xml->addAttribute("id", $this->id);
+		$xml->addChild("title", $this->title);
+
+		// Bring out the full picture.
+		if ($expand) {
+			$node = $xml->addChild("links");
+			foreach ($this->links() as $link)
+				$link->as_xml($node, null);
+		}
+
+		return $xml;
 	}
 }
 

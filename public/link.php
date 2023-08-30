@@ -89,12 +89,8 @@ class LinkHandler extends RequestHandler {
 			case self::HTML:
 				require(__DIR__ . "/../templates/link/add_success.php");
 				break;
-			case self::JSON:
-				echo $link->as_json(true);
-				break;
 			default:
-				echo "Link({$link->id()}) successfully added to the " .
-					"{$shelf->title()} shelf({$shelf->id()}).";
+				$this->render_default($link);
 				break;
 			}
 		} catch (\PDOException $e) {

@@ -24,6 +24,18 @@ function db_connect() {
 }
 
 /**
+ * Creates a brand new XML document object.
+ *
+ * @param string $root Root element name.
+ *
+ * @return SimpleXMLElement XML document object.
+ */
+function xmldoc($root) {
+	return new \SimpleXMLElement(
+		"<?xml version=\"1.0\" encoding=\"utf-8\"?><$root/>");
+}
+
+/**
  * Gets the MIME type of a buffer.
  *
  * @param resource $buffer File contents to get the MIME type from.

@@ -22,8 +22,10 @@ abstract class RequestHandler {
 
 	// Response type definitions.
 	public const UNKNOWN = 0;
+	public const PLAIN = 0;
 	public const HTML = 1;
 	public const JSON = 2;
+	public const XML = 3;
 
 	/**
 	 * Constructs a new response handler object.
@@ -103,6 +105,29 @@ abstract class RequestHandler {
 	}
 
 	/**
+	 * Renders the default view for an object given the requested format.
+	 *
+	 * @param Renderable $item Renderable item to be rendered using in the
+	 *                         requested format.
+	 */
+	public function render_default($item) {
+		switch ($this->format) {
+		case self::HTML:
+			echo $item->as_html(true);
+			break;
+		case self::JSON:
+			echo $item->as_json(true);
+			break;
+		case self::XML:
+			echo $item->as_xml(null, true)->asXML();
+			break;
+		default:
+			throw new \Exception("Unknown format to render");
+			break;
+		}
+	}
+
+	/**
 	 * Sets the Content-Type header using a specific MIME type or automatically
 	 * via the requested format.
 	 *
@@ -117,6 +142,9 @@ abstract class RequestHandler {
 				return;
 			case self::JSON:
 				header("Content-Type: application/json");
+				return;
+			case self::XML:
+				header("Content-Type: application/xml");
 				return;
 			default:
 				header("Content-Type: text/plain");
@@ -142,6 +170,9 @@ abstract class RequestHandler {
 			break;
 		case self::JSON:
 			self::error_json($code, $message, $exception);
+			break;
+		case self::XML:
+			self::error_xml($code, $message, $exception);
 			break;
 		default:
 			self::error_plain($code, $message, $exception);
@@ -220,6 +251,49 @@ abstract class RequestHandler {
 	}
 
 	/**
+	 * Replies to the client with an XML error and immediatly halts further
+	 * processing of the request.
+	 *
+	 * @param int       $code      HTTP response code.
+	 * @param string    $message   Descriptive error message.
+	 * @param Exception $exception Exception object if present.
+	 */
+	public static function error_xml($code, $message, $exception = null) {
+		http_response_code($code);
+		header("Content-Type: application/xml");
+
+		// Build up the XML object.
+		$xml = xmldoc("error");
+		$xml->addChild("message", $message);
+		if (!is_null($exception)) {
+			$node = $xml->addChild("exception");
+			$node->addChild("report", strval($exception));
+			$node->addChild("message", $exception->getMessage());
+
+			$node = $node->addChild("stacktrace");
+			foreach ($exception->getTrace() as $trace) {
+				$tn = $node->addChild("trace");
+				if (isset($trace["file"]))
+					$tn->addChild("file", $trace["file"]);
+				if (isset($trace["line"]))
+					$tn->addChild("line", $trace["line"]);
+				if (isset($trace["function"]))
+					$tn->addChild("function", $trace["function"]);
+				if (isset($trace["args"])) {
+					$tn = $tn->addChild("arguments");
+					foreach ($trace["args"] as $arg)
+						$tn->addChild("arg", $arg);
+				}
+			}
+		}
+
+		// Reply with the XML document.
+		echo $xml->asXML();
+
+		die();
+	}
+
+	/**
 	 * Tries to infer a response format from a string and sets the internal
 	 * format property accordingly.
 	 *
@@ -230,6 +304,8 @@ abstract class RequestHandler {
 			$this->format = self::HTML;
 		} else if ($format == "json") {
 			$this->format = self::JSON;
+		} else if ($format == "xml") {
+			$this->format = self::XML;
 		} else {
 			$this->format = self::UNKNOWN;
 		}

@@ -32,6 +32,19 @@ abstract class Renderable {
 	abstract public function as_array($expand = null);
 
 	/**
+	 * Renders the object as an XML document.
+	 *
+	 * @param SimpleXMLElement $parent A parent XML element or NULL if we should
+	 *                                 create a new document.
+	 * @param any              $expand Determines which properties that may be
+	 *                                 expanded if available or NULL if nothing
+	 *                                 should be expanded.
+	 *
+	 * @return SimpleXMLElement XML representation of this object.
+	 */
+	abstract public function as_xml($parent = null, $expand = null);
+
+	/**
 	 * Renders the object as JSON.
 	 *
 	 * @param any  $expand Determines which properties that may be expanded if

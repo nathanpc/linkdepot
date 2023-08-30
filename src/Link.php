@@ -236,5 +236,22 @@ class Link extends DatabaseItem {
 
 		return $arr;
 	}
+	
+	public function as_xml($parent = null, $expand = null) {
+		// Create the root element.
+		$xml = (is_null($parent)) ?
+			xmldoc("link") : $parent->addChild("link");
+
+		// Build up the base document.
+		$xml->addAttribute("id", $this->id);
+		$xml->addChild("title", $this->title);
+		$xml->addChild("url", $this->url);
+
+		// Bring out the full picture.
+		if ($expand && !is_null($this->shelf))
+			$this->shelf->as_xml($xml, null);
+
+		return $xml;
+	}
 };
 
