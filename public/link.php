@@ -27,13 +27,13 @@ class LinkHandler extends RequestHandler {
 		$this->add_handler("POST", "add", $this->handler("post_edit_add"));
 		$this->add_handler("GET", "edit", $this->handler("get_edit"));
 		$this->add_handler("POST", "edit", $this->handler("post_edit_add"));
+		$this->add_handler("GET", "delete", $this->handler("get_delete"));
+		$this->add_handler("POST", "delete", $this->handler("post_delete"));
 	}
 
 	public function get_view() {
 		// Get the link object.
-		$link = Link::FromID($this->id_param());
-		if (is_null($link))
-			$this->error(404, "Link ID $id doesn't exist");
+		$link = $this->link_param();
 
 		// Return the link.
 		$this->set_content_type();
@@ -106,12 +106,8 @@ class LinkHandler extends RequestHandler {
 			$link->fetch_favicon((!empty($params["favicon"])) ?
 				$params["favicon"] : null);
 		} else {
-			// Try to get an existing link object to change.
-			$link = Link::FromID($this->id_param());
-			if (is_null($link))
-				$this->error(404, "Link ID $id doesn't exist");
-
 			// Change everything.
+			$link = $this->link_param();
 			$link->title($params["title"]);
 			$link->url($params["url"]);
 			$link->shelf($shelf);
@@ -146,17 +142,54 @@ class LinkHandler extends RequestHandler {
 			return;
 		}
 
-		// Get the link object.
-		$link = Link::FromID($this->id_param());
-		if (is_null($link))
-			$this->error(404, "Link ID $id doesn't exist");
-
 		// Display the edit form.
+		$link = $this->link_param();
 		$params = $link->as_array();
 		$params["favicon"] = "";
 		$form_action = href("/link.php?action={$this->action}&id=" .
 			$link->id());
 		require(__DIR__ . "/../templates/link/edit.php"); 
+	}
+
+	public function get_delete() {
+		// Ignore any format that isn't HTML.
+		if (!$this->is_format(self::HTML)) {
+			http_response_code(400);
+			return;
+		}
+
+		// Get the link object and display the deletion confirmation.
+		$link = $this->link_param();
+		require(__DIR__ . "/../templates/link/delete.php"); 
+	}
+
+	public function post_delete() {
+		// Get the link object and try to delete it.
+		$link = $this->link_param();
+		try {
+			$link->delete();
+
+			// Reply to the client.
+			$this->set_content_type();
+			switch ($this->format) {
+			case self::HTML:
+				require(__DIR__ . "/../templates/head.php");
+				echo <<<HTML
+					<p>
+						Link to <a href="{$link->url()}">{$link->title()}</a>
+						successfully deleted.
+					</p>
+				HTML;
+				require(__DIR__ . "/../templates/footer.php");
+				break;
+			default:
+				$this->render_default($link);
+				break;
+			}
+		} catch (\PDOException $e) {
+			$this->error(500, "Something went wrong while trying to delete " .
+				"the item from the database", $e);
+		}
 	}
 
 	/**
@@ -171,6 +204,22 @@ class LinkHandler extends RequestHandler {
 			self::error(400, "Required parameter id wasn't set");
 
 		return $id;
+	}
+
+	/**
+	 * Gets a link object from the link ID parameter or prints an error message
+	 * if anything goes wrong and halts the execution of the script.
+	 *
+	 * @return Link Requested link object.
+	 */
+	private function link_param() {
+		// Get the link object.
+		$id = $this->id_param();
+		$link = Link::FromID($id);
+		if (is_null($link))
+			$this->error(404, "Link ID $id doesn't exist");
+
+		return $link;
 	}
 
 	protected function handler($method) {

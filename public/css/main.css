@@ -230,6 +230,12 @@ table.link-box {
 	color: #9f0049;
 }
 
+/* Buttons */
+input.delete-button {
+	color: #eb0000;
+	margin-right: 15px;
+}
+
 /* Misc. */
 
 .hidden {
