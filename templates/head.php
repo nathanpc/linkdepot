@@ -34,9 +34,9 @@ use LinkDepot\Link;
 		<!-- Navigation -->
 		<div class="nav">
 			<?= nav_item('Home', '/', 'index') ?> ‧
-			<?= nav_item('Submit', '/upload', 'upload') ?> ‧
-			<?= nav_item('Archive', '/archive', 'archive') ?> ‧
-			<?= nav_item('About', '/about', 'about') ?>
+			<?= nav_item('Add Link', '/link.php?action=add', 'link') ?> ‧
+			<?= nav_item('Shelves', '/shelves.php', 'shelves') ?> ‧
+			<?= nav_item('About', '/about.php', 'about') ?>
 		</div>
 	</div>
 
