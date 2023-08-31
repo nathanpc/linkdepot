@@ -107,19 +107,20 @@ abstract class RequestHandler {
 	/**
 	 * Renders the default view for an object given the requested format.
 	 *
-	 * @param Renderable $item Renderable item to be rendered using in the
-	 *                         requested format.
+	 * @param Renderable $item   Renderable item to be rendered using in the
+	 *                           requested format.
+	 * @param any        $expand Should we expand the rendered item?
 	 */
-	public function render_default($item) {
+	public function render_default($item, $expand = true) {
 		switch ($this->format) {
 		case self::HTML:
-			echo $item->as_html(true);
+			echo $item->as_html($expand);
 			break;
 		case self::JSON:
-			echo $item->as_json(true);
+			echo $item->as_json($expand);
 			break;
 		case self::XML:
-			echo $item->as_xml(null, true)->asXML();
+			echo $item->as_xml(null, $expand)->asXML();
 			break;
 		default:
 			throw new \Exception("Unknown format to render");
