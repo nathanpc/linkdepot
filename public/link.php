@@ -24,22 +24,18 @@ class LinkHandler extends RequestHandler {
 		$this->add_handler("GET", "favicon", $this->handler("get_favicon"));
 		$this->add_handler("GET", "add", $this->handler("get_add"));
 		$this->add_handler("POST", "add", $this->handler("post_add"));
+		$this->add_handler("GET", "view", $this->handler("get_view"));
 	}
 
 	public function get_favicon() {
-		// Get the ID of the link.
-		$id = urlparam("id");
-		if (is_null($id))
-			self::error_plain(400, "Required parameter id wasn't set");
-
 		// Get the link from the ID.
-		$link = \LinkDepot\Link::FromID($id);
+		$link = \LinkDepot\Link::FromID($this->id_param());
 		if (is_null($link))
-			self::error_plain(400, "Invalid link ID");
+			self::error(400, "Invalid link ID");
 
 		// Check if we even have a favicon.
 		if (is_null($link->favicon()))
-			self::error_plain(404, "No favicon associated with this link");
+			self::error(404, "No favicon associated with this link");
 
 		// Set the content type header and send the image.
 		header("Content-Type: " . buffer_mime_type($link->favicon()));
@@ -97,6 +93,46 @@ class LinkHandler extends RequestHandler {
 			$this->error(500, "Something went wrong while trying to commit ".
 				"changes to the database", $e);
 		}
+	}
+
+	public function get_view() {
+		// Get the link object.
+		$link = Link::FromID($this->id_param());
+		if (is_null($link))
+			$this->error(404, "Link ID $id doesn't exist");
+
+		// Return the link.
+		$this->set_content_type();
+		switch ($this->format) {
+		case self::HTML:
+			require(__DIR__ . "/../templates/head.php");
+			echo <<<HTML
+				<div class="link-shelf">
+					<table class="link-box">
+						{$link->as_html(true)}
+					</table>
+				</div>
+			HTML;
+			require(__DIR__ . "/../templates/footer.php");
+			break;
+		default:
+			$this->render_default($link);
+			break;
+		}
+	}
+
+	/**
+	 * Gets the link ID parameter or prints an error message if it's missing and
+	 * halts the execution of the script.
+	 *
+	 * @return int Requested link ID.
+	 */
+	private function id_param() {
+		$id = urlparam("id");
+		if (is_null($id))
+			self::error(400, "Required parameter id wasn't set");
+
+		return $id;
 	}
 
 	protected function handler($method) {
