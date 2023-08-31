@@ -11,8 +11,12 @@ html, body {
 	font-family: "Verdana";
 }
 
-a, a:visited, a:hover, a:active {
+a, a:visited, a:active {
 	color: darkblue;
+}
+
+a:hover {
+	color: #0076ff;
 }
 
 b {
@@ -210,7 +214,7 @@ table.link-box {
 
 /* Actions */
 
-.action-add {
+.action-add, .action-add:visited {
 	color: #008000;
 }
 
@@ -218,7 +222,7 @@ table.link-box {
 	color: #004a00;
 }
 
-.action-delete {
+.action-delete, .action-delete:visited {
 	color: #e83e8c;
 }
 
