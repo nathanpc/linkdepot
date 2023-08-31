@@ -182,6 +182,7 @@ class Link extends DatabaseItem {
 		$favicon = (!is_null($this->favicon)) ?
 			href("/link.php?action=favicon&id={$this->id}") :
 			href("/assets/default-favicon.png");
+		$edit_action = href("/link.php?action=edit&id=" . $this->id);
 
 		// Build up the element.
 		$output = <<<HTML
@@ -205,7 +206,7 @@ class Link extends DatabaseItem {
 			$output .= <<<HTML
 				<tr class="link-actions">
 					<td colspan="2">
-						<a href="#">edit</a> ‧
+						<a href="$edit_action">edit</a> ‧
 						<a class="action-delete" href="#">delete</a>
 					</td>
 				</tr>

@@ -1,9 +1,9 @@
 <?php require(__DIR__ . "/../head.php"); ?>
 
-<form id="link-add" method="POST" action="<?= href('/link.php?action=add') ?>">
+<form id="link-<?= $this->action ?>" method="POST" action="<?= $form_action ?>">
 	<div class="form-line">
 		<label for="shelf">Shelf: </label>
-		<select name="shelf" id="shelf" form="link-add">
+		<select name="shelf" id="shelf" form="link-<?= $this->action ?>">
 			<?php foreach(LinkDepot\Shelf::List() as $shelf) { ?>
 				<option value="<?= $shelf->id() ?>"
 					<?= ($shelf->id() == reqparam("shelf")) ? "selected" : "" ?>>
