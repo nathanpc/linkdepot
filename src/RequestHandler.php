@@ -294,6 +294,20 @@ abstract class RequestHandler {
 	}
 
 	/**
+	 * Gets the link ID parameter or prints an error message if it's missing and
+	 * halts the execution of the script.
+	 *
+	 * @return int Requested link ID.
+	 */
+	protected function id_param() {
+		$id = urlparam("id");
+		if (is_null($id))
+			self::error(400, "Required parameter id wasn't set");
+
+		return $id;
+	}
+
+	/**
 	 * Tries to infer a response format from a string and sets the internal
 	 * format property accordingly.
 	 *

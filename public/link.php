@@ -56,12 +56,8 @@ class LinkHandler extends RequestHandler {
 	}
 
 	public function get_favicon() {
-		// Get the link from the ID.
-		$link = \LinkDepot\Link::FromID($this->id_param());
-		if (is_null($link))
-			self::error(400, "Invalid link ID");
-
 		// Check if we even have a favicon.
+		$link = $this->link_param();
 		if (is_null($link->favicon()))
 			self::error(404, "No favicon associated with this link");
 
@@ -190,20 +186,6 @@ class LinkHandler extends RequestHandler {
 			$this->error(500, "Something went wrong while trying to delete " .
 				"the item from the database", $e);
 		}
-	}
-
-	/**
-	 * Gets the link ID parameter or prints an error message if it's missing and
-	 * halts the execution of the script.
-	 *
-	 * @return int Requested link ID.
-	 */
-	private function id_param() {
-		$id = urlparam("id");
-		if (is_null($id))
-			self::error(400, "Required parameter id wasn't set");
-
-		return $id;
 	}
 
 	/**
