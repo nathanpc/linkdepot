@@ -20,6 +20,7 @@ use PDO;
  */
 class Shelf extends DatabaseItem {
 	private $title;
+	private $starred;
 
 	/**
 	 * Constructs a brand new object with some properties pre-populated.
@@ -27,9 +28,10 @@ class Shelf extends DatabaseItem {
 	 * @param int      $id    Shelf ID in the database (NULL if not saved).
 	 * @param string   $title Descriptive name for the collection.
 	 */
-	public function __construct($id, $title) {
+	public function __construct($id, $title, $starred = false) {
 		$this->id = $id;
 		$this->title = $title;
+		$this->starred = boolval($starred);
 	}
 	
 	public static function List() {
@@ -40,6 +42,22 @@ class Shelf extends DatabaseItem {
 		return $arr;
 	}
 
+	public static function ListFavorites() {
+		$dbh = db_connect();
+
+		// Query the database.
+		$query = $dbh->prepare(
+			"SELECT * FROM shelves WHERE starred IS NOT FALSE");
+		$query->execute();
+
+		// Go through the favorites.
+		$favorites = array();
+		foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row)
+			array_push($favorites, self::FromRow($row));
+
+		return $favorites;
+	}
+
 	public static function FromID($id) {
 		return self::FromRow(self::FromTableID("shelves", $id));
 	}
@@ -48,12 +66,13 @@ class Shelf extends DatabaseItem {
 		if (is_null($row))
 			return null;
 
-		return new self($row["id"], $row["title"]);
+		return new self($row["id"], $row["title"], $row["starred"]);
 	}
 
 	public function save() {
 		$this->commit("shelves", array(
-			"title" => $this->title
+			"title" => $this->title,
+			"starred" => $this->starred
 		));
 	}
 
@@ -85,6 +104,20 @@ class Shelf extends DatabaseItem {
 	}
 
 	/**
+	 * Getter/setter for the starred property.
+	 *
+	 * @param string $value Value of the property if used as setter.
+	 *
+	 * @return string Value of the property if used as getter.
+	 */
+	public function starred($value = null) {
+		if (!is_null($value))
+			$this->starred = $value;
+
+		return $this->starred;
+	}
+
+	/**
 	 * Creates a link box table with its contents populated.
 	 *
 	 * @param bool $has_menu Should we include a menu in this item?
@@ -96,6 +129,8 @@ class Shelf extends DatabaseItem {
 		$add_href = href("/link.php?action=add&shelf={$this->id}");
 		$manage_href = href("/shelf.php?action=view&id={$this->id}");
 		$delete_href = href("/shelf.php?action=delete&id={$this->id}");
+		$fav_label = ($this->starred) ? "unfavorite" : "favorite";
+		$fav_href = href("/shelf.php?action={$fav_label}&id={$this->id}");
 
 		// Build up our element's base.
 		$output = <<<HTML
@@ -105,6 +140,7 @@ class Shelf extends DatabaseItem {
 					<span class="shelf-actions">
 						<a class="action-add" href="$add_href">add link</a> ‧
 						<a href="$manage_href">manage</a> ‧
+						<a class="action-star" href="$fav_href">$fav_label</a> ‧
 						<a class="action-delete" href="$delete_href">delete</a>
 					</span>
 				</div>
@@ -130,7 +166,8 @@ class Shelf extends DatabaseItem {
 	public function as_array($expand = null) {
 		$arr = array(
 			"id" => $this->id,
-			"title" => $this->title
+			"title" => $this->title,
+			"starred" => $this->starred
 		);
 
 		// Bring out the full picture.
@@ -150,6 +187,7 @@ class Shelf extends DatabaseItem {
 
 		// Build up the base document.
 		$xml->addAttribute("id", $this->id);
+		$xml->addAttribute("starred", $this->starred);
 		$xml->addChild("title", $this->title);
 
 		// Bring out the full picture.

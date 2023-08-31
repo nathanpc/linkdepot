@@ -25,6 +25,10 @@ class ShelfHandler extends RequestHandler {
 		$this->add_handler("GET", "view", $this->handler("get_view"));
 		$this->add_handler("POST", "add", $this->handler("post_edit_add"));
 		$this->add_handler("POST", "edit", $this->handler("post_edit_add"));
+		$this->add_handler("GET", "favorite", $this->handler("get_favorite"));
+		$this->add_handler("GET", "unfavorite", $this->handler("get_favorite"));
+		$this->add_handler("POST", "favorite", $this->handler("post_favorite"));
+		$this->add_handler("POST", "unfavorite", $this->handler("post_favorite"));
 		$this->add_handler("GET", "delete", $this->handler("get_delete"));
 		$this->add_handler("POST", "delete", $this->handler("post_delete"));
 	}
@@ -88,6 +92,43 @@ class ShelfHandler extends RequestHandler {
 			$shelf = $this->shelf_param();
 			$shelf->title($title);
 		}
+
+		try {
+			// Save the changes to the database.
+			$shelf->save();
+
+			// Reply to the client.
+			$this->set_content_type();
+			switch ($this->format) {
+			case self::HTML:
+				require(__DIR__ . "/../templates/shelf/manage.php");
+				break;
+			default:
+				$this->render_default($shelf, null);
+				break;
+			}
+		} catch (\PDOException $e) {
+			$this->error(500, "Something went wrong while trying to commit ".
+				"changes to the database", $e);
+		}
+	}
+
+	public function get_favorite() {
+		// Ignore any format that isn't HTML.
+		if (!$this->is_format(self::HTML)) {
+			http_response_code(400);
+			return;
+		}
+
+		// Get the shelf object and display the favorite confirmation.
+		$shelf = $this->shelf_param();
+		require(__DIR__ . "/../templates/shelf/favorite.php"); 
+	}
+
+	public function post_favorite() {
+		// Change our shelf object.
+		$shelf = $this->shelf_param();
+		$shelf->starred($this->action == "favorite");
 
 		try {
 			// Save the changes to the database.

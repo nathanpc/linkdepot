@@ -222,6 +222,14 @@ table.link-box {
 	color: #004a00;
 }
 
+.action-star, .action-star:visited {
+	color: #d39f00;
+}
+
+.action-star:hover {
+	color: #926f00;
+}
+
 .action-delete, .action-delete:visited {
 	color: #e83e8c;
 }
@@ -239,6 +247,9 @@ input.action-button {
 	color: #eb0000;
 }
 
+.favorite-button {
+	color: #d19d00;
+}
 /* Misc. */
 
 .hidden {

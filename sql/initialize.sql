@@ -5,8 +5,9 @@
 
 -- Shelves collect links in them.
 CREATE TABLE shelves(
-	id    INTEGER NOT NULL PRIMARY KEY,
-	title TEXT NOT NULL
+	id      INTEGER NOT NULL PRIMARY KEY,
+	title   TEXT NOT NULL,
+	starred INTEGER NOT NULL,
 );
 
 -- Individual links.
