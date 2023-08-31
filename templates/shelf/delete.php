@@ -9,7 +9,8 @@
 			<?= $shelf->title() ?></a> shelf and <b>all of its contents</b>?
 		</p>
 
-		<input type="submit" value="Delete" class="delete-button" />
+		<input type="submit" class="action-button delete-button"
+			value="Delete" />
 		<input type="button" value="Cancel" onclick="history.back()" />
 	</div>
 </form>

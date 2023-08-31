@@ -8,7 +8,8 @@
 			<?= $link->title() ?></a>?
 		</p>
 
-		<input type="submit" value="Delete" class="delete-button" />
+		<input type="submit" class="delete-button action-button"
+			value="Delete" />
 		<input type="button" value="Cancel" onclick="history.back()" />
 	</div>
 </form>
