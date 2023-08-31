@@ -93,6 +93,9 @@ class Shelf extends DatabaseItem {
 	 */
 	public function as_html($has_menu = false) {
 		$href = "href";
+		$add_href = href("/link.php?action=add&shelf={$this->id}");
+		$manage_href = href("/shelf.php?action=view&id={$this->id}");
+		$delete_href = href("/shelf.php?action=delete&id={$this->id}");
 
 		// Build up our element's base.
 		$output = <<<HTML
@@ -100,9 +103,9 @@ class Shelf extends DatabaseItem {
 				<div class="shelf-header">
 					<h3>{$this->title}</h3>
 					<span class="shelf-actions">
-						<a class="action-add" href="{$href("/link.php?action=add&shelf={$this->id}")}">add link</a> ‧
-						<a href="#">manage</a> ‧
-						<a class="action-delete" href="#">delete</a>
+						<a class="action-add" href="$add_href">add link</a> ‧
+						<a href="$manage_href">manage</a> ‧
+						<a class="action-delete" href="$delete_href">delete</a>
 					</span>
 				</div>
 
@@ -131,8 +134,11 @@ class Shelf extends DatabaseItem {
 		);
 
 		// Bring out the full picture.
-		if ($expand)
-			$arr["links"] = $this->links();
+		if ($expand) {
+			$arr["links"] = array();
+			foreach ($this->links() as $link)
+				array_push($arr["links"], $link->as_array(false));
+		}
 
 		return $arr;
 	}
