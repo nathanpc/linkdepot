@@ -90,6 +90,10 @@ class Link extends DatabaseItem {
 		));
 	}
 
+	public function delete() {
+		$this->delete_from("links");
+	}
+
 	/**
 	 * Fetches a favicon from an URL and sets the favicon property.
 	 *
@@ -183,6 +187,7 @@ class Link extends DatabaseItem {
 			href("/link.php?action=favicon&id={$this->id}") :
 			href("/assets/default-favicon.png");
 		$edit_action = href("/link.php?action=edit&id=" . $this->id);
+		$del_action = href("/link.php?action=delete&id=" . $this->id);
 
 		// Build up the element.
 		$output = <<<HTML
@@ -207,7 +212,7 @@ class Link extends DatabaseItem {
 				<tr class="link-actions">
 					<td colspan="2">
 						<a href="$edit_action">edit</a> ‧
-						<a class="action-delete" href="#">delete</a>
+						<a class="action-delete" href="$del_action">delete</a>
 					</td>
 				</tr>
 			HTML;

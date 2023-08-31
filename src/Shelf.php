@@ -57,6 +57,10 @@ class Shelf extends DatabaseItem {
 		));
 	}
 
+	public function delete() {
+		$this->delete_from("shelves");
+	}
+
 	/**
 	 * Lists the links associated with this collection.
 	 *

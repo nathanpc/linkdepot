@@ -143,6 +143,30 @@ abstract class DatabaseItem extends Renderable {
 	}
 
 	/**
+	 * Deletes the item from the database and sets the ID to NULL.
+	 */
+	abstract public function delete();
+
+	/**
+	 * Deletes the item from the database given a table using its ID.
+	 *
+	 * @warning This method will also set the item ID to NULL.
+	 *
+	 * @param string $table Database table name.
+	 */
+	protected function delete_from($table) {
+		$dbh = db_connect();
+
+		// Query the database.
+		$query = $dbh->prepare("DELETE FROM $table WHERE id = :id");
+		$query->bindValue(":id", $this->id);
+		$query->execute();
+
+		// Set the item ID to NULL to indicate it's no longer in the database.
+		$this->id = null;
+	}
+
+	/**
 	 * Gets the ID od the item in the database.
 	 *
 	 * @return int ID of the item in the database.
