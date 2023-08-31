@@ -226,8 +226,7 @@ class Link extends DatabaseItem {
 		$arr = array(
 			"id" => $this->id,
 			"title" => $this->title,
-			"url" => $this->url,
-			"favicon" => $this->favicon
+			"url" => $this->url
 		);
 
 		// Give a full picture if requested.
