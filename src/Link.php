@@ -185,7 +185,8 @@ class Link extends DatabaseItem {
 
 		// Build up the element.
 		$output = <<<HTML
-			<tr class="link-item" onclick="open_link('{$this->url}', event)"
+			<tr class="link-item" id="link-{$this->id}"
+					onclick="open_link('{$this->url}', event)"
 					onauxclick="open_link('{$this->url}', event)">
 				<td class="col-icon">
 					<img class="favicon" src="$favicon" />
