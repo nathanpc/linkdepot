@@ -72,63 +72,35 @@ class ShelfHandler extends RequestHandler {
 		}
 	}
 
-	public function get_add() {
-		// Ignore any format that isn't HTML.
-		if (!$this->is_format(self::HTML)) {
-			http_response_code(400);
-			return;
-		}
-
-		// Display the add form.
-		$params = reqmultiparams(["url", "title", "favicon"], "");
-		$form_action = href("/link.php?action={$this->action}");
-		require(__DIR__ . "/../templates/link/edit.php"); 
-	}
-
 	public function post_edit_add() {
-		$params = reqmultiparams(["url", "title", "favicon", "shelf"]);
+		// Get the title.
+		$title = reqparam("title");
+		if (is_null($title))
+			$this->error(400, "Required parameter title wasn't set");
 
-		// Check for required parameters.
-		$required = required_params(["url", "title", "shelf"]);
-		if ($required) {
-			$this->error(400, "Required parameters " .
-				implode(", ", $required) . " weren't set");
-		}
-
-		// Check if the requested shelf exists.
-		$shelf = Shelf::FromID($params["shelf"]);
-		if (is_null($shelf))
-			$this->error(400, "Shelf ID {$params["shelf"]} doesn't exist");
-
-		// Build our link object.
-		$link = null;
+		// Build our shelf object.
+		$shelf = null;
 		if ($this->action == "add") {
-			// Create a brand new link object.
-			$link = new Link(null, $params["title"], $params["url"], null, $shelf);
-			$link->fetch_favicon((!empty($params["favicon"])) ?
-				$params["favicon"] : null);
+			// Create a brand new shelf object.
+			$shelf = new Shelf(null, $title);
 		} else {
 			// Change everything.
-			$link = $this->link_param();
-			$link->title($params["title"]);
-			$link->url($params["url"]);
-			$link->shelf($shelf);
-			if (!empty($params["favicon"]))
-				$link->fetch_favicon($params["favicon"]);
+			$shelf = $this->shelf_param();
+			$shelf->title($title);
 		}
 
 		try {
 			// Save the changes to the database.
-			$link->save();
+			$shelf->save();
 
 			// Reply to the client.
 			$this->set_content_type();
 			switch ($this->format) {
 			case self::HTML:
-				require(__DIR__ . "/../templates/link/edit_success.php");
+				require(__DIR__ . "/../templates/shelf/manage.php");
 				break;
 			default:
-				$this->render_default($link);
+				$this->render_default($shelf, null);
 				break;
 			}
 		} catch (\PDOException $e) {
@@ -144,16 +116,16 @@ class ShelfHandler extends RequestHandler {
 			return;
 		}
 
-		// Get the link object and display the deletion confirmation.
-		$link = $this->link_param();
-		require(__DIR__ . "/../templates/link/delete.php"); 
+		// Get the shelf object and display the deletion confirmation.
+		$shelf = $this->shelf_param();
+		require(__DIR__ . "/../templates/shelf/delete.php"); 
 	}
 
 	public function post_delete() {
-		// Get the link object and try to delete it.
-		$link = $this->link_param();
+		// Get the shelf object and try to delete it.
+		$shelf = $this->shelf_param();
 		try {
-			$link->delete();
+			$shelf->delete();
 
 			// Reply to the client.
 			$this->set_content_type();
@@ -162,14 +134,13 @@ class ShelfHandler extends RequestHandler {
 				require(__DIR__ . "/../templates/head.php");
 				echo <<<HTML
 					<p>
-						Link to <a href="{$link->url()}">{$link->title()}</a>
-						successfully deleted.
+						{$shelf->title()} shelf successfully deleted.
 					</p>
 				HTML;
 				require(__DIR__ . "/../templates/footer.php");
 				break;
 			default:
-				$this->render_default($link);
+				$this->render_default($shelf);
 				break;
 			}
 		} catch (\PDOException $e) {
