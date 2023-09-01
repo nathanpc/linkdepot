@@ -23,6 +23,14 @@ b {
 	font-weight: bold;
 }
 
+h2 {
+	font-size: 1.5em;
+}
+
+h3 {
+	font-size: 1.3em;
+}
+
 p code {
 	color: #e83e8c;
 }
@@ -52,6 +60,7 @@ sup {
 }
 
 /* Navbar */
+
 #navbar {
 	padding: 10px 5px;
 	border-bottom: 1px solid #585858;
@@ -239,6 +248,7 @@ table.link-box {
 }
 
 /* Buttons */
+
 input.action-button {
 	margin-right: 15px;
 }
@@ -250,6 +260,7 @@ input.action-button {
 .favorite-button {
 	color: #d19d00;
 }
+
 /* Misc. */
 
 .hidden {
@@ -272,6 +283,22 @@ input.action-button {
 	padding: 10px 15px;
 	background-color: papayawhip;
 	overflow: auto;
+}
+
+a.bookmarklet {
+	padding: 5px 10px;
+	line-height: 3em;
+
+	border-radius: 20px;
+	border: 1px solid #9a9a9a;
+
+	text-shadow: #dadada 1px 1px;
+	background-color: #c1c1c1;
+	color: #232323;
+
+	white-space: nowrap;
+	text-decoration: none;
+	font-weight: bold;
 }
 
 .form-line {
