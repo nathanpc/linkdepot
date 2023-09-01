@@ -49,10 +49,11 @@ function buffer_mime_type($buffer) {
 /**
  * Creates a simple, but effective, title string.
  *
- * @param  string $desc An optional descriptor of the current page. This will be
- *                      automatically substituted by a PAGE_TITLE constant if
- *                      it is defined.
- * @return string       Formatted title.
+ * @param string $desc An optional descriptor of the current page. This will be
+ *                     automatically substituted by a PAGE_TITLE constant if
+ *                     it is defined.
+ *
+ * @return string Formatted title.
  */
 function site_title($desc = NULL) {
 	// Default to just the application name.
@@ -72,8 +73,9 @@ function site_title($desc = NULL) {
 /**
  * Checks if a parent page name matches the current page name.
  *
- * @param  string  $parent Parent page script name without the extension.
- * @return boolean         Are the page names the same?
+ * @param string $parent Parent page script name without the extension.
+ *
+ * @return boolean Are the page names the same?
  */
 function is_parent_page($parent) {
 	return basename($_SERVER['PHP_SELF'], '.php') == $parent;
@@ -202,8 +204,9 @@ function required_params($names) {
 /**
  * Automatically generate a link if a string is a URL.
  *
- * @param  string $str String to be checked for an URL.
- * @return string      Same string if it's not a URL. Otherwise an anchor tag.
+ * @param string $str String to be checked for an URL.
+ *
+ * @return string Same string if it's not a URL. Otherwise an anchor tag.
  */
 function auto_link($str) {
 	// Check if we actually have an URL.
@@ -225,10 +228,11 @@ function auto_link($str) {
 /**
  * Generates a navbar item.
  * 
- * @param  string $label    Label of the item.
- * @param  string $href     Relative URL this item points to or a full URL.
- * @param  string $pagename Destination page script name without the extension.
- * @return string           Fully-populated Bootstrap navbar item.
+ * @param string $label    Label of the item.
+ * @param string $href     Relative URL this item points to or a full URL.
+ * @param string $pagename Destination page script name without the extension.
+ * 
+ * @return string Fully-populated navbar item.
  */
 function nav_item($label, $href, $pagename) {
 	// Are we the current page?
@@ -250,6 +254,7 @@ function nav_item($label, $href, $pagename) {
  * Checks for 'booleanic' values.
  *
  * @param any $value Value to be checked for booleaness.
+ *
  * @return boolean Returns TRUE for "1", "true", "on" and "yes". FALSE for "0",
  *                 "false", "off" and "no".
  *
