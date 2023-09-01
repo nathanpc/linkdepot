@@ -82,12 +82,26 @@ function is_parent_page($parent) {
 /**
  * Creates a proper href location based on our project's root path.
  *
- * @param  string $loc Location as if the resource was in the root of the server
- *                     with the slash prefix.
- * @return string      Transposed location of the resource.
+ * @param string $loc      Location as if the resource was in the root of the
+ *                         server with the slash prefix.
+ * @param bool   $absolute Should the URL be absolute (including protocol and
+ *                         domain name)?
+ *
+ * @return string Transposed location of the resource.
  */
-function href($loc) {
-	return SITE_URL . $loc;
+function href($loc, $absolute = false) {
+	// Pretty relative URL.
+	$href = SITE_URL . $loc;
+	$base = "";
+
+	// Should we make this URL absolute globally?
+	if ($absolute) {
+		$base = (substr($_SERVER["SERVER_PROTOCOL"], 0, 5) == "HTTPS") ?
+			"https" : "http";
+		$base .= "://" . $_SERVER["HTTP_HOST"];
+	}
+
+	return $base . $href;
 }
 
 /**
