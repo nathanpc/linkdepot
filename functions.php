@@ -17,8 +17,10 @@ function db_connect() {
 	static $pdo = null;
 
 	// Connect to the database in case it hasn't been done previously.
-	if ($pdo == null)
+	if ($pdo == null) {
 		$pdo = new \PDO("sqlite:" . __DIR__ . DB_PATH);
+		$pdo->exec("PRAGMA foreign_keys = ON");
+	}
 
 	return $pdo;
 }
